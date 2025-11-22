@@ -1002,6 +1002,15 @@
                 }
             }
         });
+
+        // スマホでチャート外タップ時にツールチップを非表示
+        document.addEventListener('click', function(e) {
+            const chartCanvas = document.getElementById('mainChart');
+            if (mainChart && chartCanvas && !chartCanvas.contains(e.target)) {
+                mainChart.tooltip.setActiveElements([], {x: 0, y: 0});
+                mainChart.update();
+            }
+        });
         }
 
         // Investment Simulator Data
@@ -1353,6 +1362,15 @@
             mainChart.data.datasets = selectedAssets;
             mainChart.update();
         }
+
+        // シミュレーターチャート外タップ時にツールチップを非表示
+        document.addEventListener('click', function(e) {
+            const simCanvas = document.getElementById('simulationChart');
+            if (window.simChart && simCanvas && !simCanvas.contains(e.target)) {
+                window.simChart.tooltip.setActiveElements([], {x: 0, y: 0});
+                window.simChart.update();
+            }
+        });
 
         // Initialize main chart on page load
         window.addEventListener('DOMContentLoaded', (event) => {
