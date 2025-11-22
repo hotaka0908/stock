@@ -398,11 +398,11 @@
         </div>
 
         <!-- Investment Simulator Section -->
-        <div style="margin-top: 40px; padding: 30px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px;">
-            <h2 style="color: white; text-align: center; margin-bottom: 20px;">💰 100万円投資シミュレーター</h2>
-            <p style="color: white; text-align: center; opacity: 0.9; margin-bottom: 30px;">過去のデータと未来予測（年平均リターン使用）をシミュレート</p>
+        <div style="margin-top: 40px; padding: 30px; background: #f8f9fa; border: 1px solid #e0e0e0; border-radius: 12px;">
+            <h2 style="color: #2c3e50; text-align: center; margin-bottom: 10px;">💰 100万円投資シミュレーター</h2>
+            <p style="color: #6c757d; text-align: center; margin-bottom: 30px; font-size: 14px;">過去のデータと未来予測（年平均リターン使用）をシミュレート</p>
 
-            <div style="background: white; border-radius: 10px; padding: 25px;">
+            <div style="background: white; border-radius: 10px; padding: 25px; border: 1px solid #e0e0e0;">
                 <div style="margin-bottom: 20px;">
                     <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 10px;">📊 資産を選択</label>
                     <select id="assetSelect" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;">
@@ -426,7 +426,7 @@
                     </div>
                 </div>
 
-                <button onclick="runSimulation()" style="width: 100%; padding: 15px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer;">
+                <button onclick="runSimulation()" style="width: 100%; padding: 15px; background: #2c3e50; color: white; border: none; border-radius: 8px; font-size: 18px; font-weight: 600; cursor: pointer; transition: background 0.3s;" onmouseover="this.style.background='#1a252f'" onmouseout="this.style.background='#2c3e50'">
                     シミュレーション実行
                 </button>
 
