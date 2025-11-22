@@ -251,12 +251,39 @@
             }
 
             table {
-                font-size: 12px;
-                min-width: 800px;
+                font-size: 11px;
+                min-width: 650px;
             }
 
             th, td {
-                padding: 8px 6px;
+                padding: 6px 4px;
+            }
+
+            /* ランキング表示の調整 */
+            .rank-1::before, .rank-2::before, .rank-3::before {
+                font-size: 0.6em !important;
+                top: 2px !important;
+                left: 2px !important;
+            }
+
+            .rank-1, .rank-2, .rank-3 {
+                padding-top: 16px !important;
+            }
+
+            /* 期間列の調整 */
+            td:first-child {
+                font-size: 10px;
+                min-width: 60px;
+            }
+
+            td:first-child small {
+                font-size: 9px;
+                display: block;
+            }
+
+            /* テーブル見出しのフォントサイズ */
+            table h3 {
+                font-size: 16px !important;
             }
 
             .notes {
@@ -346,11 +373,32 @@
             }
 
             table {
-                font-size: 11px;
+                font-size: 10px;
+                min-width: 580px;
             }
 
             th, td {
-                padding: 6px 4px;
+                padding: 5px 3px;
+            }
+
+            /* 極小画面でのランキング調整 */
+            .rank-1::before, .rank-2::before, .rank-3::before {
+                font-size: 0.55em !important;
+                top: 1px !important;
+                left: 1px !important;
+            }
+
+            .rank-1, .rank-2, .rank-3 {
+                padding-top: 14px !important;
+            }
+
+            td:first-child {
+                font-size: 9px;
+                min-width: 55px;
+            }
+
+            td:first-child small {
+                font-size: 8px;
             }
         }
     </style>
