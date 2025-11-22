@@ -151,24 +151,31 @@
         .negative {
             color: #dc3545;
         }
-        .rank-1 {
+        .rank-1, .rank-2, .rank-3 {
             position: relative;
             font-weight: bold;
+            padding-top: 22px !important;
         }
-        .rank-1::after {
+        .rank-1::before {
             content: '🥇';
-            margin-left: 5px;
-            font-size: 0.9em;
+            position: absolute;
+            top: 4px;
+            left: 10px;
+            font-size: 0.85em;
         }
-        .rank-2::after {
+        .rank-2::before {
             content: '🥈';
-            margin-left: 5px;
-            font-size: 0.9em;
+            position: absolute;
+            top: 4px;
+            left: 10px;
+            font-size: 0.85em;
         }
-        .rank-3::after {
+        .rank-3::before {
             content: '🥉';
-            margin-left: 5px;
-            font-size: 0.9em;
+            position: absolute;
+            top: 4px;
+            left: 10px;
+            font-size: 0.85em;
         }
     </style>
 </head>
