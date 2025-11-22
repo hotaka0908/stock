@@ -1040,8 +1040,8 @@
                                         label += '¥' + value.toFixed(0) + '円';
                                     }
 
-                                    // Add percentage growth from ¥100
-                                    const growth = ((value - 100) / 100 * 100).toFixed(1);
+                                    // Add percentage growth from ¥100万円
+                                    const growth = ((value - 1000000) / 1000000 * 100).toFixed(1);
                                     if (growth > 0) {
                                         label += ' (+' + growth + '%)';
                                     } else {
@@ -1087,12 +1087,12 @@
                                 weight: 'bold'
                             }
                         },
-                        min: 50,
-                        max: 5000000,
+                        min: 100000,
+                        max: 1000000000,
                         ticks: {
                             callback: function(value, index, values) {
                                 // Define specific tick values to show
-                                const tickValues = [50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000];
+                                const tickValues = [100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000, 200000000, 500000000, 1000000000];
 
                                 if (tickValues.includes(value)) {
                                     if (value >= 100000000) {
@@ -1497,18 +1497,31 @@
 
             const filteredData = dataPoints.filter(d => d.year >= startYear);
 
+            // 開始年の各資産の値を取得（正規化の基準）
+            const startValues = filteredData[0];
+
             // チャートのラベルとデータを更新
             mainChart.data.labels = filteredData.map(d => d.year);
 
-            // 各データセットのデータを更新
+            // 各データセットのデータを更新（開始時点を100万円に正規化）
             Object.keys(allDatasets).forEach(key => {
                 const dataset = allDatasets[key];
-                const filteredValues = filteredData.map(d => d[key]);
+
+                // 開始時点の値で正規化して100万円基準に
+                let normalizedValues;
+                if (startValues[key] !== null && startValues[key] !== undefined) {
+                    normalizedValues = filteredData.map(d => {
+                        if (d[key] === null || d[key] === undefined) return null;
+                        return (d[key] / startValues[key]) * 1000000;
+                    });
+                } else {
+                    normalizedValues = filteredData.map(d => d[key]);
+                }
 
                 // チャート内の対応するデータセットを見つけて更新
                 const chartDataset = mainChart.data.datasets.find(ds => ds.label === dataset.label);
                 if (chartDataset) {
-                    chartDataset.data = filteredValues;
+                    chartDataset.data = normalizedValues;
                 }
             });
 
@@ -1534,11 +1547,24 @@
             const startYear = currentYear - currentPeriod;
             const filteredData = dataPoints.filter(d => d.year >= startYear);
 
+            // 開始年の値を取得（正規化の基準）
+            const startValues = filteredData[0];
+
             checkboxes.forEach(checkbox => {
                 if (document.getElementById(checkbox.id).checked) {
                     const key = checkbox.key;
                     const dataset = {...allDatasets[key]};
-                    dataset.data = filteredData.map(d => d[key]);
+
+                    // 開始時点の値で正規化して100万円基準に
+                    if (startValues[key] !== null && startValues[key] !== undefined) {
+                        dataset.data = filteredData.map(d => {
+                            if (d[key] === null || d[key] === undefined) return null;
+                            return (d[key] / startValues[key]) * 1000000;
+                        });
+                    } else {
+                        dataset.data = filteredData.map(d => d[key]);
+                    }
+
                     selectedAssets.push(dataset);
                 }
             });
