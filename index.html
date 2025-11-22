@@ -1031,14 +1031,14 @@
                                 if (context.parsed.y !== null) {
                                     const value = context.parsed.y;
                                     if (value >= 1000000) {
-                                        label += '$' + (value / 1000000).toFixed(2) + 'M';
+                                        label += '¥' + (value / 1000000).toFixed(2) + 'M';
                                     } else if (value >= 1000) {
-                                        label += '$' + (value / 1000).toFixed(1) + 'K';
+                                        label += '¥' + (value / 1000).toFixed(1) + 'K';
                                     } else {
-                                        label += '$' + value.toFixed(2);
+                                        label += '¥' + value.toFixed(2);
                                     }
 
-                                    // Add percentage growth from $100
+                                    // Add percentage growth from ¥100
                                     const growth = ((value - 100) / 100 * 100).toFixed(1);
                                     if (growth > 0) {
                                         label += ' (+' + growth + '%)';
@@ -1094,11 +1094,11 @@
 
                                 if (tickValues.includes(value)) {
                                     if (value >= 1000000) {
-                                        return '$' + (value / 1000000).toFixed(value % 1000000 === 0 ? 0 : 1) + 'M';
+                                        return '¥' + (value / 1000000).toFixed(value % 1000000 === 0 ? 0 : 1) + 'M';
                                     } else if (value >= 1000) {
-                                        return '$' + (value / 1000).toFixed(0) + 'K';
+                                        return '¥' + (value / 1000).toFixed(0) + 'K';
                                     } else {
-                                        return '$' + value.toFixed(0);
+                                        return '¥' + value.toFixed(0);
                                     }
                                 }
                                 return '';
