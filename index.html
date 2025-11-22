@@ -1087,8 +1087,7 @@
                                 weight: 'bold'
                             }
                         },
-                        min: 100000,
-                        max: 1000000000,
+                        // min and max will be set dynamically
                         ticks: {
                             callback: function(value, index, values) {
                                 // Define specific tick values to show
@@ -1503,6 +1502,9 @@
             // チャートのラベルとデータを更新
             mainChart.data.labels = filteredData.map(d => d.year);
 
+            // 正規化されたデータを収集
+            const allNormalizedValues = [];
+
             // 各データセットのデータを更新（開始時点を100万円に正規化）
             Object.keys(allDatasets).forEach(key => {
                 const dataset = allDatasets[key];
@@ -1514,6 +1516,8 @@
                         if (d[key] === null || d[key] === undefined) return null;
                         return (d[key] / startValues[key]) * 1000000;
                     });
+                    // null以外の値を収集
+                    allNormalizedValues.push(...normalizedValues.filter(v => v !== null));
                 } else {
                     normalizedValues = filteredData.map(d => d[key]);
                 }
@@ -1524,6 +1528,16 @@
                     chartDataset.data = normalizedValues;
                 }
             });
+
+            // Y軸の範囲を動的に調整
+            if (allNormalizedValues.length > 0) {
+                const minValue = Math.min(...allNormalizedValues);
+                const maxValue = Math.max(...allNormalizedValues);
+
+                // 10%のマージンを追加
+                mainChart.options.scales.y.min = minValue * 0.9;
+                mainChart.options.scales.y.max = maxValue * 1.1;
+            }
 
             mainChart.update();
         }
@@ -1550,6 +1564,9 @@
             // 開始年の値を取得（正規化の基準）
             const startValues = filteredData[0];
 
+            // 正規化されたデータを収集
+            const allNormalizedValues = [];
+
             checkboxes.forEach(checkbox => {
                 if (document.getElementById(checkbox.id).checked) {
                     const key = checkbox.key;
@@ -1561,6 +1578,8 @@
                             if (d[key] === null || d[key] === undefined) return null;
                             return (d[key] / startValues[key]) * 1000000;
                         });
+                        // null以外の値を収集
+                        allNormalizedValues.push(...dataset.data.filter(v => v !== null));
                     } else {
                         dataset.data = filteredData.map(d => d[key]);
                     }
@@ -1572,6 +1591,17 @@
             // Update chart data
             mainChart.data.labels = filteredData.map(d => d.year);
             mainChart.data.datasets = selectedAssets;
+
+            // Y軸の範囲を動的に調整
+            if (allNormalizedValues.length > 0) {
+                const minValue = Math.min(...allNormalizedValues);
+                const maxValue = Math.max(...allNormalizedValues);
+
+                // 10%のマージンを追加
+                mainChart.options.scales.y.min = minValue * 0.9;
+                mainChart.options.scales.y.max = maxValue * 1.1;
+            }
+
             mainChart.update();
         }
 
@@ -1587,6 +1617,8 @@
         // Initialize main chart on page load
         window.addEventListener('DOMContentLoaded', (event) => {
             initChart();
+            // 初期表示時にY軸範囲を設定
+            updateChart();
         });
     </script>
 </body>
