@@ -437,7 +437,7 @@
                 </label>
             </div>
             <div class="legend-item">
-                <input type="checkbox" id="chart-dollar" value="dollar" checked onchange="updateChart()">
+                <input type="checkbox" id="chart-dollar" value="dollar" onchange="updateChart()">
                 <label for="chart-dollar" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                     <div class="legend-color" style="background: #9966FF;"></div>
                     <span>米ドル指数</span>
@@ -458,7 +458,7 @@
                 </label>
             </div>
             <div class="legend-item">
-                <input type="checkbox" id="chart-jpy" value="jpy" onchange="updateChart()">
+                <input type="checkbox" id="chart-jpy" value="jpy" checked onchange="updateChart()">
                 <label for="chart-jpy" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                     <div class="legend-color" style="background: #E91E63;"></div>
                     <span>日本円</span>
@@ -906,7 +906,7 @@
             type: 'line',
             data: {
                 labels: dataPoints.map(d => d.year),
-                datasets: [allDatasets.sp500, allDatasets.gold, allDatasets.dollar]
+                datasets: [allDatasets.sp500, allDatasets.gold, allDatasets.jpy]
             },
             options: {
                 responsive: true,
