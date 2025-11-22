@@ -287,8 +287,13 @@
             }
 
             #simStartYear, #simEndYear, #assetSelect {
-                font-size: 14px !important;
-                padding: 10px !important;
+                font-size: 13px !important;
+                padding: 8px !important;
+            }
+
+            /* 銘柄選択ラベルのフォントサイズ */
+            label[style*="📊 資産を選択"] {
+                font-size: 13px !important;
             }
 
             /* 年入力フィールドのコンテナ */
@@ -420,9 +425,9 @@
                 <div style="margin-bottom: 20px;">
                     <label style="font-weight: 600; color: #2c3e50; display: block; margin-bottom: 10px;">📊 資産を選択</label>
                     <select id="assetSelect" style="width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 16px;">
-                        <option value="sp500">S&P 500</option>
+                        <option value="sp500">S&P 500（米国株）</option>
                         <option value="gold">金（ゴールド）</option>
-                        <option value="bonds">米国10年債</option>
+                        <option value="bonds">米10年債</option>
                         <option value="nikkei">日経平均</option>
                         <option value="dollar">米ドル指数</option>
                         <option value="nasdaq">NASDAQ 100</option>
