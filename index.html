@@ -183,6 +183,145 @@
             color: #cd7f32;
             font-weight: bold;
         }
+
+        /* スマホ対応レスポンシブデザイン */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+
+            .container {
+                padding: 15px;
+                border-radius: 8px;
+            }
+
+            h1 {
+                font-size: 20px;
+                margin-bottom: 8px;
+            }
+
+            .subtitle {
+                font-size: 12px;
+                margin-bottom: 20px;
+            }
+
+            .legend-box {
+                gap: 10px;
+            }
+
+            .legend-item {
+                flex: 0 0 calc(50% - 5px);
+                font-size: 13px;
+            }
+
+            .legend-item label span {
+                font-size: 12px;
+            }
+
+            .chart-container {
+                height: 300px;
+                margin-bottom: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+                margin-top: 20px;
+            }
+
+            .stat-card {
+                padding: 12px;
+            }
+
+            .stat-card h3 {
+                font-size: 14px;
+            }
+
+            .stat-card .value {
+                font-size: 20px;
+            }
+
+            .stat-card .period {
+                font-size: 11px;
+            }
+
+            .table-container {
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            table {
+                font-size: 12px;
+                min-width: 800px;
+            }
+
+            th, td {
+                padding: 8px 6px;
+            }
+
+            .notes {
+                padding: 12px;
+                font-size: 12px;
+            }
+
+            .notes h4 {
+                font-size: 14px;
+            }
+
+            .notes li {
+                font-size: 12px;
+            }
+
+            /* シミュレーター調整 */
+            [style*="margin-top: 40px"] {
+                margin-top: 20px !important;
+                padding: 15px !important;
+            }
+
+            [style*="padding: 25px"] {
+                padding: 15px !important;
+            }
+
+            h2 {
+                font-size: 18px !important;
+            }
+
+            #simStartYear, #simEndYear, #assetSelect {
+                font-size: 14px !important;
+            }
+
+            button[onclick="runSimulation()"] {
+                font-size: 16px !important;
+                padding: 12px !important;
+            }
+        }
+
+        /* 極小スマホ対応 */
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 18px;
+            }
+
+            .legend-item {
+                flex: 0 0 100%;
+            }
+
+            .chart-container {
+                height: 250px;
+            }
+
+            .stat-card .value {
+                font-size: 18px;
+            }
+
+            table {
+                font-size: 11px;
+            }
+
+            th, td {
+                padding: 6px 4px;
+            }
+        }
     </style>
 </head>
 <body>
