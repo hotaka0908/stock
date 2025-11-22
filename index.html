@@ -1030,12 +1030,14 @@
                                 }
                                 if (context.parsed.y !== null) {
                                     const value = context.parsed.y;
-                                    if (value >= 1000000) {
-                                        label += '¥' + (value / 1000000).toFixed(2) + 'M';
+                                    if (value >= 100000000) {
+                                        label += '¥' + (value / 100000000).toFixed(2) + '億円';
+                                    } else if (value >= 10000) {
+                                        label += '¥' + (value / 10000).toFixed(1) + '万円';
                                     } else if (value >= 1000) {
-                                        label += '¥' + (value / 1000).toFixed(1) + 'K';
+                                        label += '¥' + (value / 1000).toFixed(1) + '千円';
                                     } else {
-                                        label += '¥' + value.toFixed(2);
+                                        label += '¥' + value.toFixed(0) + '円';
                                     }
 
                                     // Add percentage growth from ¥100
@@ -1093,12 +1095,14 @@
                                 const tickValues = [50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000, 50000, 100000, 200000, 500000, 1000000, 2000000, 5000000];
 
                                 if (tickValues.includes(value)) {
-                                    if (value >= 1000000) {
-                                        return '¥' + (value / 1000000).toFixed(value % 1000000 === 0 ? 0 : 1) + 'M';
+                                    if (value >= 100000000) {
+                                        return (value / 100000000).toFixed(value % 100000000 === 0 ? 0 : 1) + '億';
+                                    } else if (value >= 10000) {
+                                        return (value / 10000).toFixed(0) + '万';
                                     } else if (value >= 1000) {
-                                        return '¥' + (value / 1000).toFixed(0) + 'K';
+                                        return (value / 1000).toFixed(0) + '千';
                                     } else {
-                                        return '¥' + value.toFixed(0);
+                                        return value.toFixed(0);
                                     }
                                 }
                                 return '';
