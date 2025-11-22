@@ -457,6 +457,13 @@
                     <span>ビットコイン</span>
                 </label>
             </div>
+            <div class="legend-item">
+                <input type="checkbox" id="chart-jpy" value="jpy" onchange="updateChart()">
+                <label for="chart-jpy" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
+                    <div class="legend-color" style="background: #E91E63;"></div>
+                    <span>日本円</span>
+                </label>
+            </div>
         </div>
 
         <div class="chart-container">
@@ -478,6 +485,7 @@
                         <option value="dollar">米ドル指数</option>
                         <option value="nasdaq">NASDAQ 100</option>
                         <option value="bitcoin">ビットコイン</option>
+                        <option value="jpy">日本円</option>
                     </select>
                 </div>
 
@@ -566,6 +574,12 @@
                 <div class="period">14年間総リターン（2010-2024）</div>
                 <div class="period">年平均: 230%</div>
             </div>
+            <div class="stat-card" style="border-color: #E91E63;">
+                <h3>💴 日本円</h3>
+                <div class="value">-33%</div>
+                <div class="period">75年間変動（1949-2024）</div>
+                <div class="period">年平均: -0.53%</div>
+            </div>
         </div>
 
         <div class="table-container">
@@ -581,6 +595,7 @@
                         <th>米ドル指数</th>
                         <th>NASDAQ 100</th>
                         <th>ビットコイン</th>
+                        <th>日本円</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -589,6 +604,7 @@
                         <td class="positive rank-1">+265%</td>
                         <td class="negative">-3%</td>
                         <td class="positive rank-2">+45%</td>
+                        <td>-</td>
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
@@ -603,12 +619,14 @@
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
+                        <td>-</td>
                     </tr>
                     <tr>
                         <td><strong>1940年代</strong><br><small>第二次世界大戦</small></td>
                         <td class="positive rank-1">+35%</td>
                         <td class="negative">-1%</td>
                         <td class="positive rank-2">+33%</td>
+                        <td>-</td>
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
@@ -623,6 +641,7 @@
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
+                        <td class="negative">-1%</td>
                     </tr>
                     <tr>
                         <td><strong>1960年代</strong><br><small>高度成長期</small></td>
@@ -633,6 +652,7 @@
                         <td>-</td>
                         <td>-</td>
                         <td>-</td>
+                        <td class="negative">-2%</td>
                     </tr>
                     <tr>
                         <td><strong>1970年代</strong><br><small>オイルショック</small></td>
@@ -643,6 +663,7 @@
                         <td class="negative">-23%</td>
                         <td>-</td>
                         <td>-</td>
+                        <td class="positive">+28%</td>
                     </tr>
                     <tr>
                         <td><strong>1980年代</strong><br><small>バブル経済</small></td>
@@ -653,6 +674,7 @@
                         <td class="positive">+67%</td>
                         <td class="positive">+117%</td>
                         <td>-</td>
+                        <td class="negative">-46%</td>
                     </tr>
                     <tr>
                         <td><strong>1990年代</strong><br><small>ITバブル</small></td>
@@ -663,6 +685,7 @@
                         <td class="positive">+25%</td>
                         <td class="positive rank-1">+795%</td>
                         <td>-</td>
+                        <td class="positive">+15%</td>
                     </tr>
                     <tr>
                         <td><strong>2000年代</strong><br><small>金融危機</small></td>
@@ -673,6 +696,7 @@
                         <td class="negative rank-3">-23%</td>
                         <td class="negative">-42%</td>
                         <td>-</td>
+                        <td class="positive">+11%</td>
                     </tr>
                     <tr>
                         <td><strong>2010年代</strong><br><small>量的緩和</small></td>
@@ -683,6 +707,7 @@
                         <td class="positive">+25%</td>
                         <td class="positive rank-2">+430%</td>
                         <td class="positive rank-1">+137,900%</td>
+                        <td class="negative">-6%</td>
                     </tr>
                     <tr>
                         <td><strong>2020-2024</strong><br><small>コロナ・インフレ</small></td>
@@ -693,6 +718,7 @@
                         <td class="positive">+15%</td>
                         <td class="positive rank-2">+108%</td>
                         <td class="positive rank-1">+224%</td>
+                        <td class="negative">-27%</td>
                     </tr>
                 </tbody>
             </table>
@@ -710,28 +736,28 @@
 
         // 代表的な年のデータポイント（対数スケール用）
         const dataPoints = [
-            { year: 1924, sp500: 100, gold: 100, bonds: 100, nikkei: null, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1929, sp500: 365, gold: 97, bonds: 145, nikkei: null, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1932, sp500: 89, gold: 120, bonds: 180, nikkei: null, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1940, sp500: 216, gold: 164, bonds: 203, nikkei: null, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1949, sp500: 292, gold: 162, bonds: 270, nikkei: 100, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1950, sp500: 353, gold: 162, bonds: 268, nikkei: 102, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1960, sp500: 1260, gold: 158, bonds: 258, nikkei: 490, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1970, sp500: 1940, gold: 175, bonds: 297, nikkei: 1004, dollar: null, nasdaq: null, bitcoin: null },
-            { year: 1973, sp500: 2265, gold: 470, bonds: 320, nikkei: 2900, dollar: 100, nasdaq: null, bitcoin: null },
-            { year: 1980, sp500: 2650, gold: 2977, bonds: 448, nikkei: 3860, dollar: 77, nasdaq: null, bitcoin: null },
-            { year: 1985, sp500: 5150, gold: 1536, bonds: 895, nikkei: 8300, dollar: 125, nasdaq: 100, bitcoin: null },
-            { year: 1989, sp500: 6867, gold: 1925, bonds: 1100, nikkei: 20500, dollar: 105, nasdaq: 217, bitcoin: null },
-            { year: 1990, sp500: 8687, gold: 1772, bonds: 1237, nikkei: 16600, dollar: 128, nasdaq: 202, bitcoin: null },
-            { year: 1999, sp500: 27500, gold: 1258, bonds: 2200, nikkei: 11000, dollar: 153, nasdaq: 1950, bitcoin: null },
-            { year: 2000, sp500: 36000, gold: 1258, bonds: 2413, nikkei: 9900, dollar: 160, nasdaq: 1250, bitcoin: null },
-            { year: 2008, sp500: 22150, gold: 4250, bonds: 3650, nikkei: 4300, dollar: 110, nasdaq: 729, bitcoin: null },
-            { year: 2010, sp500: 27350, gold: 5790, bonds: 4443, nikkei: 5740, dollar: 123, nasdaq: 1100, bitcoin: 100 },
-            { year: 2013, sp500: 47500, gold: 5780, bonds: 4830, nikkei: 8500, dollar: 123, nasdaq: 1800, bitcoin: 83000 },
-            { year: 2017, sp500: 62000, gold: 6530, bonds: 4930, nikkei: 10200, dollar: 111, nasdaq: 2400, bitcoin: 1380000 },
-            { year: 2020, sp500: 79500, gold: 7180, bonds: 6443, nikkei: 15700, dollar: 123, nasdaq: 5830, bitcoin: 2900000 },
-            { year: 2021, sp500: 102500, gold: 6890, bonds: 6123, nikkei: 16500, dollar: 130, nasdaq: 7460, bitcoin: 5800000 },
-            { year: 2024, sp500: 2984909, gold: 11554, bonds: 7200, nikkei: 22632, dollar: 97, nasdaq: 25050, bitcoin: 9400000 }
+            { year: 1924, sp500: 100, gold: 100, bonds: 100, nikkei: null, dollar: null, nasdaq: null, bitcoin: null, jpy: null },
+            { year: 1929, sp500: 365, gold: 97, bonds: 145, nikkei: null, dollar: null, nasdaq: null, bitcoin: null, jpy: null },
+            { year: 1932, sp500: 89, gold: 120, bonds: 180, nikkei: null, dollar: null, nasdaq: null, bitcoin: null, jpy: null },
+            { year: 1940, sp500: 216, gold: 164, bonds: 203, nikkei: null, dollar: null, nasdaq: null, bitcoin: null, jpy: null },
+            { year: 1949, sp500: 292, gold: 162, bonds: 270, nikkei: 100, dollar: null, nasdaq: null, bitcoin: null, jpy: 100 },
+            { year: 1950, sp500: 353, gold: 162, bonds: 268, nikkei: 102, dollar: null, nasdaq: null, bitcoin: null, jpy: 100 },
+            { year: 1960, sp500: 1260, gold: 158, bonds: 258, nikkei: 490, dollar: null, nasdaq: null, bitcoin: null, jpy: 99 },
+            { year: 1970, sp500: 1940, gold: 175, bonds: 297, nikkei: 1004, dollar: null, nasdaq: null, bitcoin: null, jpy: 97 },
+            { year: 1973, sp500: 2265, gold: 470, bonds: 320, nikkei: 2900, dollar: 100, nasdaq: null, bitcoin: null, jpy: 124 },
+            { year: 1980, sp500: 2650, gold: 2977, bonds: 448, nikkei: 3860, dollar: 77, nasdaq: null, bitcoin: null, jpy: 151 },
+            { year: 1985, sp500: 5150, gold: 1536, bonds: 895, nikkei: 8300, dollar: 125, nasdaq: 100, bitcoin: null, jpy: 82 },
+            { year: 1989, sp500: 6867, gold: 1925, bonds: 1100, nikkei: 20500, dollar: 105, nasdaq: 217, bitcoin: null, jpy: 98 },
+            { year: 1990, sp500: 8687, gold: 1772, bonds: 1237, nikkei: 16600, dollar: 128, nasdaq: 202, bitcoin: null, jpy: 79 },
+            { year: 1999, sp500: 27500, gold: 1258, bonds: 2200, nikkei: 11000, dollar: 153, nasdaq: 1950, bitcoin: null, jpy: 91 },
+            { year: 2000, sp500: 36000, gold: 1258, bonds: 2413, nikkei: 9900, dollar: 160, nasdaq: 1250, bitcoin: null, jpy: 95 },
+            { year: 2008, sp500: 22150, gold: 4250, bonds: 3650, nikkei: 4300, dollar: 110, nasdaq: 729, bitcoin: null, jpy: 105 },
+            { year: 2010, sp500: 27350, gold: 5790, bonds: 4443, nikkei: 5740, dollar: 123, nasdaq: 1100, bitcoin: 100, jpy: 110 },
+            { year: 2013, sp500: 47500, gold: 5780, bonds: 4830, nikkei: 8500, dollar: 123, nasdaq: 1800, bitcoin: 83000, jpy: 103 },
+            { year: 2017, sp500: 62000, gold: 6530, bonds: 4930, nikkei: 10200, dollar: 111, nasdaq: 2400, bitcoin: 1380000, jpy: 91 },
+            { year: 2020, sp500: 79500, gold: 7180, bonds: 6443, nikkei: 15700, dollar: 123, nasdaq: 5830, bitcoin: 2900000, jpy: 96 },
+            { year: 2021, sp500: 102500, gold: 6890, bonds: 6123, nikkei: 16500, dollar: 130, nasdaq: 7460, bitcoin: 5800000, jpy: 92 },
+            { year: 2024, sp500: 2984909, gold: 11554, bonds: 7200, nikkei: 22632, dollar: 97, nasdaq: 25050, bitcoin: 9400000, jpy: 67 }
         ];
 
         // All datasets definition
@@ -848,6 +874,23 @@
                 pointBorderColor: '#fff',
                 pointBorderWidth: 1,
                 pointHoverBackgroundColor: '#F7931A',
+                pointHoverBorderColor: '#fff',
+                pointHoverBorderWidth: 2,
+                spanGaps: true
+            },
+            jpy: {
+                label: '日本円',
+                data: dataPoints.map(d => d.jpy),
+                borderColor: '#E91E63',
+                backgroundColor: 'rgba(233, 30, 99, 0.05)',
+                borderWidth: 2.5,
+                tension: 0.4,
+                pointRadius: 4,
+                pointHoverRadius: 6,
+                pointBackgroundColor: '#E91E63',
+                pointBorderColor: '#fff',
+                pointBorderWidth: 1,
+                pointHoverBackgroundColor: '#E91E63',
                 pointHoverBorderColor: '#fff',
                 pointHoverBorderWidth: 2,
                 spanGaps: true
@@ -1130,6 +1173,26 @@
                     2016: 1.25, 2017: 13.80, 2018: -0.73, 2019: 0.95, 2020: 3.01, 2021: 0.60,
                     2022: -0.64, 2023: 1.56, 2024: 0.62
                 }
+            },
+            jpy: {
+                name: '日本円',
+                color: '#E91E63',
+                avgReturn: -0.0053, // 年平均-0.53%
+                annualReturns: {
+                    1949: 0.00, 1950: 0.00, 1951: -0.01, 1952: 0.00, 1953: 0.00, 1954: 0.00,
+                    1955: 0.00, 1956: -0.01, 1957: 0.00, 1958: 0.00, 1959: 0.00, 1960: -0.01,
+                    1961: 0.00, 1962: 0.00, 1963: 0.00, 1964: 0.00, 1965: 0.00, 1966: -0.01,
+                    1967: 0.00, 1968: 0.00, 1969: 0.00, 1970: -0.02, 1971: 0.07, 1972: 0.05,
+                    1973: 0.28, 1974: 0.08, 1975: 0.01, 1976: 0.11, 1977: 0.11, 1978: 0.28,
+                    1979: -0.08, 1980: -0.07, 1981: 0.09, 1982: 0.05, 1983: 0.05, 1984: 0.06,
+                    1985: 0.14, 1986: 0.23, 1987: 0.19, 1988: 0.09, 1989: -0.11, 1990: -0.08,
+                    1991: 0.04, 1992: 0.06, 1993: 0.13, 1994: 0.10, 1995: 0.06, 1996: -0.06,
+                    1997: 0.06, 1998: 0.02, 1999: 0.03, 2000: 0.04, 2001: 0.05, 2002: 0.03,
+                    2003: -0.01, 2004: 0.03, 2005: 0.09, 2006: 0.03, 2007: 0.06, 2008: -0.18,
+                    2009: 0.07, 2010: 0.05, 2011: 0.06, 2012: 0.14, 2013: -0.17, 2014: -0.12,
+                    2015: -0.09, 2016: 0.03, 2017: 0.04, 2018: 0.03, 2019: 0.01, 2020: 0.05,
+                    2021: -0.09, 2022: -0.19, 2023: -0.07, 2024: 0.10
+                }
             }
         };
 
@@ -1333,7 +1396,8 @@
                 { id: 'chart-nikkei', key: 'nikkei' },
                 { id: 'chart-dollar', key: 'dollar' },
                 { id: 'chart-nasdaq', key: 'nasdaq' },
-                { id: 'chart-bitcoin', key: 'bitcoin' }
+                { id: 'chart-bitcoin', key: 'bitcoin' },
+                { id: 'chart-jpy', key: 'jpy' }
             ];
 
             checkboxes.forEach(checkbox => {
