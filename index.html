@@ -66,6 +66,33 @@
             color: #7f8c8d;
             margin-top: 5px;
         }
+        .period-selector {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        .period-btn {
+            padding: 8px 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #2c3e50;
+            transition: all 0.2s;
+        }
+        .period-btn:hover {
+            border-color: #2c3e50;
+            background: #f8f9fa;
+        }
+        .period-btn.active {
+            background: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
         .legend-box {
             display: flex;
             justify-content: center;
@@ -221,6 +248,16 @@
             .subtitle {
                 font-size: 12px;
                 margin-bottom: 20px;
+            }
+
+            .period-selector {
+                gap: 6px;
+                margin-bottom: 12px;
+            }
+
+            .period-btn {
+                padding: 6px 12px;
+                font-size: 12px;
             }
 
             .legend-box {
@@ -437,6 +474,14 @@
 <body>
     <div class="container">
         <h1>🌍 主要資産 100年パフォーマンス比較</h1>
+
+        <div class="period-selector">
+            <button class="period-btn active" onclick="changePeriod(100)">100年</button>
+            <button class="period-btn" onclick="changePeriod(50)">50年</button>
+            <button class="period-btn" onclick="changePeriod(20)">20年</button>
+            <button class="period-btn" onclick="changePeriod(10)">10年</button>
+            <button class="period-btn" onclick="changePeriod(1)">1年</button>
+        </div>
 
         <div class="chart-wrapper">
         <div class="legend-box">
@@ -1419,6 +1464,42 @@
             }, 100);
         }
 
+        // Period filter function
+        let currentPeriod = 100; // デフォルトは100年
+
+        function changePeriod(years) {
+            currentPeriod = years;
+
+            // ボタンのアクティブ状態を更新
+            document.querySelectorAll('.period-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+
+            // データをフィルター
+            const currentYear = 2024;
+            const startYear = currentYear - years;
+
+            const filteredData = dataPoints.filter(d => d.year >= startYear);
+
+            // チャートのラベルとデータを更新
+            mainChart.data.labels = filteredData.map(d => d.year);
+
+            // 各データセットのデータを更新
+            Object.keys(allDatasets).forEach(key => {
+                const dataset = allDatasets[key];
+                const filteredValues = filteredData.map(d => d[key]);
+
+                // チャート内の対応するデータセットを見つけて更新
+                const chartDataset = mainChart.data.datasets.find(ds => ds.label === dataset.label);
+                if (chartDataset) {
+                    chartDataset.data = filteredValues;
+                }
+            });
+
+            mainChart.update();
+        }
+
         // Function to update chart based on checkbox selections
         function updateChart() {
             const selectedAssets = [];
@@ -1433,13 +1514,22 @@
                 { id: 'chart-jpy', key: 'jpy' }
             ];
 
+            // 現在の期間でフィルターされたデータを使用
+            const currentYear = 2024;
+            const startYear = currentYear - currentPeriod;
+            const filteredData = dataPoints.filter(d => d.year >= startYear);
+
             checkboxes.forEach(checkbox => {
                 if (document.getElementById(checkbox.id).checked) {
-                    selectedAssets.push(allDatasets[checkbox.key]);
+                    const key = checkbox.key;
+                    const dataset = {...allDatasets[key]};
+                    dataset.data = filteredData.map(d => d[key]);
+                    selectedAssets.push(dataset);
                 }
             });
 
             // Update chart data
+            mainChart.data.labels = filteredData.map(d => d.year);
             mainChart.data.datasets = selectedAssets;
             mainChart.update();
         }
