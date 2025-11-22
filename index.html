@@ -184,6 +184,24 @@
             font-weight: bold;
         }
 
+        /* デスクトップ版ではデフォルトの順序 */
+        @media (min-width: 769px) {
+            .chart-wrapper {
+                display: block;
+            }
+
+            .legend-box {
+                order: 0;
+                margin-bottom: 20px;
+                margin-top: 0;
+            }
+
+            .chart-container {
+                order: 0;
+                margin-bottom: 20px;
+            }
+        }
+
         /* スマホ対応レスポンシブデザイン */
         @media (max-width: 768px) {
             body {
@@ -218,9 +236,22 @@
                 font-size: 12px;
             }
 
+            /* チャートラッパーをフレックスコンテナにして順序を制御 */
+            .chart-wrapper {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .legend-box {
+                order: 2; /* スマホでは凡例を下に */
+                margin-top: 15px;
+                margin-bottom: 0;
+            }
+
             .chart-container {
+                order: 1; /* スマホではチャートを上に */
                 height: 300px;
-                margin-bottom: 20px;
+                margin-bottom: 0;
             }
 
             .stats-grid {
@@ -407,6 +438,7 @@
     <div class="container">
         <h1>🌍 主要資産 100年パフォーマンス比較</h1>
 
+        <div class="chart-wrapper">
         <div class="legend-box">
             <div class="legend-item">
                 <input type="checkbox" id="chart-sp500" value="sp500" checked onchange="updateChart()">
@@ -468,6 +500,7 @@
 
         <div class="chart-container">
             <canvas id="mainChart"></canvas>
+        </div>
         </div>
 
         <!-- Investment Simulator Section -->
