@@ -174,14 +174,14 @@
                 </label>
             </div>
             <div class="legend-item">
-                <input type="checkbox" id="chart-bonds" value="bonds" checked onchange="updateChart()">
+                <input type="checkbox" id="chart-bonds" value="bonds" onchange="updateChart()">
                 <label for="chart-bonds" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                     <div class="legend-color" style="background: #36A2EB;"></div>
                     <span>米国10年債</span>
                 </label>
             </div>
             <div class="legend-item">
-                <input type="checkbox" id="chart-nikkei" value="nikkei" checked onchange="updateChart()">
+                <input type="checkbox" id="chart-nikkei" value="nikkei" onchange="updateChart()">
                 <label for="chart-nikkei" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                     <div class="legend-color" style="background: #4BC0C0;"></div>
                     <span>日経平均株価</span>
@@ -195,7 +195,7 @@
                 </label>
             </div>
             <div class="legend-item">
-                <input type="checkbox" id="chart-nasdaq" value="nasdaq" checked onchange="updateChart()">
+                <input type="checkbox" id="chart-nasdaq" value="nasdaq" onchange="updateChart()">
                 <label for="chart-nasdaq" style="display: flex; align-items: center; gap: 5px; cursor: pointer;">
                     <div class="legend-color" style="background: #FF9F40;"></div>
                     <span>NASDAQ 100</span>
@@ -583,7 +583,7 @@
             type: 'line',
             data: {
                 labels: dataPoints.map(d => d.year),
-                datasets: Object.values(allDatasets)
+                datasets: [allDatasets.sp500, allDatasets.gold, allDatasets.dollar]
             },
             options: {
                 responsive: true,
