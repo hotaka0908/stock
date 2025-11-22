@@ -288,11 +288,37 @@
 
             #simStartYear, #simEndYear, #assetSelect {
                 font-size: 14px !important;
+                padding: 10px !important;
+            }
+
+            /* 年入力フィールドのコンテナ */
+            [style*="display: flex; gap: 20px"] {
+                gap: 10px !important;
+            }
+
+            /* ラベルのフォントサイズ調整 */
+            [style*="font-weight: 600"] {
+                font-size: 13px !important;
+                margin-bottom: 8px !important;
             }
 
             button[onclick="runSimulation()"] {
                 font-size: 16px !important;
                 padding: 12px !important;
+            }
+
+            /* シミュレーション結果のグリッド調整 */
+            #simulationResult [style*="grid-template-columns"] {
+                grid-template-columns: repeat(2, 1fr) !important;
+                gap: 10px !important;
+            }
+
+            #simulationResult [style*="font-size: 24px"] {
+                font-size: 18px !important;
+            }
+
+            #simulationResult [style*="font-size: 14px"] {
+                font-size: 12px !important;
             }
         }
 
