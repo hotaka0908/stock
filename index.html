@@ -1534,9 +1534,21 @@
                 const minValue = Math.min(...allNormalizedValues);
                 const maxValue = Math.max(...allNormalizedValues);
 
-                // 10%のマージンを追加
-                mainChart.options.scales.y.min = minValue * 0.9;
-                mainChart.options.scales.y.max = maxValue * 1.1;
+                // 期間に応じてマージンを調整（短期ほど狭く）
+                let marginRatio;
+                if (currentPeriod <= 1) {
+                    marginRatio = 0.02; // 1年: 2%マージン
+                } else if (currentPeriod <= 5) {
+                    marginRatio = 0.03; // 5年: 3%マージン
+                } else if (currentPeriod <= 10) {
+                    marginRatio = 0.05; // 10年: 5%マージン
+                } else {
+                    marginRatio = 0.1;  // 20年以上: 10%マージン
+                }
+
+                const range = maxValue - minValue;
+                mainChart.options.scales.y.min = minValue - (range * marginRatio);
+                mainChart.options.scales.y.max = maxValue + (range * marginRatio);
             }
 
             mainChart.update();
@@ -1597,9 +1609,21 @@
                 const minValue = Math.min(...allNormalizedValues);
                 const maxValue = Math.max(...allNormalizedValues);
 
-                // 10%のマージンを追加
-                mainChart.options.scales.y.min = minValue * 0.9;
-                mainChart.options.scales.y.max = maxValue * 1.1;
+                // 期間に応じてマージンを調整（短期ほど狭く）
+                let marginRatio;
+                if (currentPeriod <= 1) {
+                    marginRatio = 0.02; // 1年: 2%マージン
+                } else if (currentPeriod <= 5) {
+                    marginRatio = 0.03; // 5年: 3%マージン
+                } else if (currentPeriod <= 10) {
+                    marginRatio = 0.05; // 10年: 5%マージン
+                } else {
+                    marginRatio = 0.1;  // 20年以上: 10%マージン
+                }
+
+                const range = maxValue - minValue;
+                mainChart.options.scales.y.min = minValue - (range * marginRatio);
+                mainChart.options.scales.y.max = maxValue + (range * marginRatio);
             }
 
             mainChart.update();
