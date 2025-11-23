@@ -1596,24 +1596,30 @@
                 const minValue = Math.min(...allNormalizedValues);
                 const maxValue = Math.max(...allNormalizedValues);
 
-                let yMin, yMax;
-
-                // 短期間は固定の上限値を使用
+                // 期間に応じてマージンを調整
+                let marginRatio;
                 if (currentPeriod <= 1) {
-                    yMax = 3000000; // 1年: 300万円
-                    yMin = Math.min(minValue * 0.98, 700000); // 最小値の2%下または70万円
+                    marginRatio = 0.02; // 1年: 2%マージン
                 } else if (currentPeriod <= 5) {
-                    yMax = 5000000; // 5年: 500万円
-                    yMin = Math.min(minValue * 0.97, 500000); // 最小値の3%下または50万円
+                    marginRatio = 0.03; // 5年: 3%マージン
                 } else if (currentPeriod <= 10) {
-                    yMax = 10000000; // 10年: 1000万円
-                    yMin = Math.min(minValue * 0.96, 400000); // 最小値の4%下または40万円
+                    marginRatio = 0.04; // 10年: 4%マージン
                 } else {
-                    // 20年以上は動的調整
-                    const marginRatio = 0.1;
-                    const range = maxValue - minValue;
-                    yMin = minValue - (range * marginRatio);
-                    yMax = maxValue + (range * marginRatio);
+                    marginRatio = 0.1;  // 20年以上: 10%マージン
+                }
+
+                const range = maxValue - minValue;
+                let yMin = minValue - (range * marginRatio);
+                let yMax = maxValue + (range * marginRatio);
+
+                // 線形スケールの場合、基準線（100万円）が常に表示範囲に入るように調整
+                if (currentPeriod <= 10) {
+                    const baseline = 1000000;
+                    if (baseline < minValue) {
+                        yMin = Math.min(yMin, baseline - (range * marginRatio * 0.5));
+                    } else if (baseline > maxValue) {
+                        yMax = Math.max(yMax, baseline + (range * marginRatio * 0.5));
+                    }
                 }
 
                 mainChart.options.scales.y.min = yMin;
@@ -1685,24 +1691,30 @@
                 const minValue = Math.min(...allNormalizedValues);
                 const maxValue = Math.max(...allNormalizedValues);
 
-                let yMin, yMax;
-
-                // 短期間は固定の上限値を使用
+                // 期間に応じてマージンを調整
+                let marginRatio;
                 if (currentPeriod <= 1) {
-                    yMax = 3000000; // 1年: 300万円
-                    yMin = Math.min(minValue * 0.98, 700000); // 最小値の2%下または70万円
+                    marginRatio = 0.02; // 1年: 2%マージン
                 } else if (currentPeriod <= 5) {
-                    yMax = 5000000; // 5年: 500万円
-                    yMin = Math.min(minValue * 0.97, 500000); // 最小値の3%下または50万円
+                    marginRatio = 0.03; // 5年: 3%マージン
                 } else if (currentPeriod <= 10) {
-                    yMax = 10000000; // 10年: 1000万円
-                    yMin = Math.min(minValue * 0.96, 400000); // 最小値の4%下または40万円
+                    marginRatio = 0.04; // 10年: 4%マージン
                 } else {
-                    // 20年以上は動的調整
-                    const marginRatio = 0.1;
-                    const range = maxValue - minValue;
-                    yMin = minValue - (range * marginRatio);
-                    yMax = maxValue + (range * marginRatio);
+                    marginRatio = 0.1;  // 20年以上: 10%マージン
+                }
+
+                const range = maxValue - minValue;
+                let yMin = minValue - (range * marginRatio);
+                let yMax = maxValue + (range * marginRatio);
+
+                // 線形スケールの場合、基準線（100万円）が常に表示範囲に入るように調整
+                if (currentPeriod <= 10) {
+                    const baseline = 1000000;
+                    if (baseline < minValue) {
+                        yMin = Math.min(yMin, baseline - (range * marginRatio * 0.5));
+                    } else if (baseline > maxValue) {
+                        yMax = Math.max(yMax, baseline + (range * marginRatio * 0.5));
+                    }
                 }
 
                 mainChart.options.scales.y.min = yMin;
