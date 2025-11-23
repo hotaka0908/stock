@@ -1123,9 +1123,21 @@
                         // min and max will be set dynamically
                         ticks: {
                             callback: function(value, index, values) {
-                                // Define specific tick values to show
-                                const tickValues = [100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000, 200000000, 500000000, 1000000000];
+                                // 線形スケールの場合は常に表示
+                                if (this.type === 'linear') {
+                                    if (value >= 100000000) {
+                                        return (value / 100000000).toFixed(value % 100000000 === 0 ? 0 : 1) + '億';
+                                    } else if (value >= 10000) {
+                                        return (value / 10000).toFixed(0) + '万';
+                                    } else if (value >= 1000) {
+                                        return (value / 1000).toFixed(0) + '千';
+                                    } else {
+                                        return value.toFixed(0);
+                                    }
+                                }
 
+                                // 対数スケールの場合は特定の値のみ表示
+                                const tickValues = [100000, 200000, 500000, 1000000, 2000000, 5000000, 10000000, 20000000, 50000000, 100000000, 200000000, 500000000, 1000000000];
                                 if (tickValues.includes(value)) {
                                     if (value >= 100000000) {
                                         return (value / 100000000).toFixed(value % 100000000 === 0 ? 0 : 1) + '億';
@@ -1140,6 +1152,7 @@
                                 return '';
                             },
                             autoSkip: false,
+                            maxTicksLimit: 10,
                             font: {
                                 size: 11
                             },
