@@ -37,6 +37,10 @@
             position: relative;
             height: 500px;
             margin-bottom: 40px;
+            transition: height 0.3s ease;
+        }
+        .chart-container.short-period {
+            height: 650px;
         }
         .stats-grid {
             display: grid;
@@ -289,6 +293,10 @@
                 order: 1; /* スマホではチャートを上に */
                 height: 300px;
                 margin-bottom: 0;
+            }
+
+            .chart-container.short-period {
+                height: 400px;
             }
 
             .stats-grid {
@@ -989,6 +997,39 @@
         // チャートの初期作成
         let mainChart;
 
+        // 基準線を描画するカスタムプラグイン
+        const baselinePlugin = {
+            id: 'baselinePlugin',
+            afterDatasetsDraw: function(chart) {
+                const ctx = chart.ctx;
+                const yScale = chart.scales.y;
+                const xScale = chart.scales.x;
+
+                // ¥100万円の位置を取得
+                const baselineValue = 1000000;
+                const yPos = yScale.getPixelForValue(baselineValue);
+
+                // 基準線が表示範囲内にある場合のみ描画
+                if (yPos >= yScale.top && yPos <= yScale.bottom) {
+                    ctx.save();
+                    ctx.strokeStyle = 'rgba(100, 100, 100, 0.5)';
+                    ctx.lineWidth = 2;
+                    ctx.setLineDash([8, 4]);
+                    ctx.beginPath();
+                    ctx.moveTo(xScale.left, yPos);
+                    ctx.lineTo(xScale.right, yPos);
+                    ctx.stroke();
+
+                    // ラベルを描画
+                    ctx.fillStyle = 'rgba(100, 100, 100, 0.8)';
+                    ctx.font = 'bold 11px sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText('基準: ¥100万円', xScale.left + 5, yPos - 5);
+                    ctx.restore();
+                }
+            }
+        };
+
         function initChart() {
             const ctx = document.getElementById('mainChart').getContext('2d');
             mainChart = new Chart(ctx, {
@@ -1119,7 +1160,8 @@
                         }
                     }
                 }
-            }
+            },
+            plugins: [baselinePlugin]
         });
 
         // スマホでチャート外タップ時にツールチップを非表示
@@ -1490,6 +1532,14 @@
             });
             event.target.classList.add('active');
 
+            // チャートコンテナの高さを調整（10年以下の短期間は高くする）
+            const chartContainer = document.querySelector('.chart-container');
+            if (years <= 10) {
+                chartContainer.classList.add('short-period');
+            } else {
+                chartContainer.classList.remove('short-period');
+            }
+
             // データをフィルター
             const currentYear = 2024;
             const startYear = currentYear - years;
@@ -1529,6 +1579,13 @@
                 }
             });
 
+            // 10年以下の短期間は線形スケール、それ以上は対数スケールに切り替え
+            if (years <= 10) {
+                mainChart.options.scales.y.type = 'linear';
+            } else {
+                mainChart.options.scales.y.type = 'logarithmic';
+            }
+
             // Y軸の範囲を動的に調整
             if (allNormalizedValues.length > 0) {
                 const minValue = Math.min(...allNormalizedValues);
@@ -1537,11 +1594,11 @@
                 // 期間に応じてマージンを調整（短期ほど狭く）
                 let marginRatio;
                 if (currentPeriod <= 1) {
-                    marginRatio = 0.02; // 1年: 2%マージン
+                    marginRatio = 0.05; // 1年: 5%マージン
                 } else if (currentPeriod <= 5) {
-                    marginRatio = 0.03; // 5年: 3%マージン
+                    marginRatio = 0.08; // 5年: 8%マージン
                 } else if (currentPeriod <= 10) {
-                    marginRatio = 0.05; // 10年: 5%マージン
+                    marginRatio = 0.10; // 10年: 10%マージン
                 } else {
                     marginRatio = 0.1;  // 20年以上: 10%マージン
                 }
@@ -1604,6 +1661,13 @@
             mainChart.data.labels = filteredData.map(d => d.year);
             mainChart.data.datasets = selectedAssets;
 
+            // 10年以下の短期間は線形スケール、それ以上は対数スケールに切り替え
+            if (currentPeriod <= 10) {
+                mainChart.options.scales.y.type = 'linear';
+            } else {
+                mainChart.options.scales.y.type = 'logarithmic';
+            }
+
             // Y軸の範囲を動的に調整
             if (allNormalizedValues.length > 0) {
                 const minValue = Math.min(...allNormalizedValues);
@@ -1612,11 +1676,11 @@
                 // 期間に応じてマージンを調整（短期ほど狭く）
                 let marginRatio;
                 if (currentPeriod <= 1) {
-                    marginRatio = 0.02; // 1年: 2%マージン
+                    marginRatio = 0.05; // 1年: 5%マージン
                 } else if (currentPeriod <= 5) {
-                    marginRatio = 0.03; // 5年: 3%マージン
+                    marginRatio = 0.08; // 5年: 8%マージン
                 } else if (currentPeriod <= 10) {
-                    marginRatio = 0.05; // 10年: 5%マージン
+                    marginRatio = 0.10; // 10年: 10%マージン
                 } else {
                     marginRatio = 0.1;  // 20年以上: 10%マージン
                 }
